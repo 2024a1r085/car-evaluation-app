@@ -1,0 +1,202 @@
+{% set labels = {
+    "low": "Low",
+    "med": "Medium",
+    "high": "High",
+    "vhigh": "Very High",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5more": "5 or More",
+    "more": "More than 4",
+    "small": "Small",
+    "big": "Large"
+} %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Evaluation AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- LEFT PANEL -->
+    <div class="form-panel">
+
+        <div class="header">
+            <h1>Car Evaluation AI</h1>
+
+            <p>
+                Predict whether a car is acceptable based on pricing,
+                maintenance cost, safety, and capacity.
+                <a href="#" id="info-link" onclick="document.getElementById('info-modal').style.display='flex'; return false;">How it works</a>
+            </p>
+        </div>
+
+        <form method="POST">
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Buying Price</label>
+                    <select name="buying">
+                        <option value="low">Low</option>
+                        <option value="med">Medium</option>
+                        <option value="high">High</option>
+                        <option value="vhigh">Very High</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Maintenance Cost</label>
+                    <select name="maint">
+                        <option value="low">Low</option>
+                        <option value="med">Medium</option>
+                        <option value="high">High</option>
+                        <option value="vhigh">Very High</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Number of Doors</label>
+                    <select name="doors">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5more">5 or More</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Passenger Capacity</label>
+                    <select name="persons">
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="more">More than 4</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Luggage Boot Size</label>
+                    <select name="lug_boot">
+                        <option value="small">Small</option>
+                        <option value="med">Medium</option>
+                        <option value="big">Large</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Safety Rating</label>
+                    <select name="safety">
+                        <option value="low">Low</option>
+                        <option value="med">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Evaluate Vehicle
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- RIGHT PANEL -->
+    <div class="result-panel">
+
+        <div class="result-card">
+
+            <h2>Prediction Result</h2>
+
+            {% if prediction %}
+
+                {% if prediction == 'unacc' %}
+                    <div class="prediction-box unacc">
+                        UNACCEPTABLE
+                    </div>
+
+                {% elif prediction == 'acc' %}
+                    <div class="prediction-box acc">
+                        ACCEPTABLE
+                    </div>
+
+                {% elif prediction == 'good' %}
+                    <div class="prediction-box good">
+                        GOOD
+                    </div>
+
+                {% elif prediction == 'vgood' %}
+                    <div class="prediction-box vgood">
+                        VERY GOOD
+                    </div>
+                {% endif %}
+
+                {% if features %}
+                <div class="features-summary">
+                    <h3>Selected Features</h3>
+                    <ul>
+                        {% for label, value in features.items() %}
+                        <li>
+                            <span class="feature-label">{{ label }}</span>
+                            {{ labels.get(value, value) }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+            {% else %}
+
+                <div class="placeholder">
+
+                    <div class="placeholder-icon">🧠</div>
+
+                    <p>
+                        Choose the car features on the left and click
+                        <strong>Evaluate Vehicle</strong>
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="info-modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal-box">
+        <button class="modal-close" onclick="document.getElementById('info-modal').style.display='none'">✕</button>
+        <h2>How the Model Works</h2>
+        <p>This tool uses a <strong>decision tree classifier</strong> trained on the UCI Car Evaluation dataset to rate a car based on 6 features:</p>
+        <ul>
+            <li><strong>Buying Price</strong> — the upfront cost of the car</li>
+            <li><strong>Maintenance Cost</strong> — estimated ongoing upkeep</li>
+            <li><strong>Number of Doors</strong> — how many doors it has</li>
+            <li><strong>Passenger Capacity</strong> — how many people it seats</li>
+            <li><strong>Luggage Boot Size</strong> — small, medium, or large</li>
+            <li><strong>Safety Rating</strong> — low, medium, or high</li>
+        </ul>
+        <p>Based on these inputs, the model outputs one of four ratings:</p>
+        <ul>
+            <li><strong style="color:#e74c3c">UNACCEPTABLE</strong> — not worth considering</li>
+            <li><strong style="color:#f39c12">ACCEPTABLE</strong> — meets minimum standards</li>
+            <li><strong style="color:#27ae60">GOOD</strong> — a solid choice</li>
+            <li><strong style="color:#2980b9">VERY GOOD</strong> — highly recommended</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
