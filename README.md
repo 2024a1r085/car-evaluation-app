@@ -1,4 +1,4 @@
-# Car Evaluation AI
+# 🚗 Car Evaluation AI
 
 A Flask web app that uses a **Decision Tree classifier** to evaluate a car's
 overall rating based on 6 key features — buying price, maintenance cost,
