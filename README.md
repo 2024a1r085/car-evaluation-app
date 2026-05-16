@@ -12,10 +12,10 @@ Select the car's features and the model instantly predicts one of four ratings:
 
 | Rating | Meaning |
 |---|---|
-| 🔴 Unacceptable | Not worth considering |
-| 🟡 Acceptable | Meets minimum standards |
-| 🟢 Good | A solid choice |
-| 🔵 Very Good | Highly recommended |
+| 🔴 UNACCEPTABLE | Not worth considering |
+| 🟡 ACCEPTABLE | Meets minimum standards |
+| 🟢 GOOD | A solid choice |
+| 🔵 VERY GOOD | Highly recommended |
 
 ## 🚀 Getting Started
 
